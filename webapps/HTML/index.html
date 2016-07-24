@@ -1,0 +1,32 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+
+        (function poll() {
+            setTimeout(function() {
+                $.ajax({
+                    url: "http://127.0.0.1:9000/async",
+                    success: function(data, status, jqXHR) {
+                        console.log(data);
+                        setTimeout( poll, 10 );
+                    },
+                    error: function(jqXHR, status, errorThrown) {
+                        if (status=='timeout') {
+                            console.log( 'request timed out.' );
+                            setTimeout( poll, 10 );
+                        }
+                        else {
+                            console.log(status);
+                            setTimeout( poll, 12000 );
+                        }
+                    },
+                    dataType: "text",
+                    timeout: 12000
+                });
+            }, 10);
+        })();
+
+    </script>
+</head>
+</html>
